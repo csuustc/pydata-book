@@ -8,3 +8,5 @@ np.loads
 np.loadtxt
 np.pkgload
 ```
+
+$$ a = b + 1 $$
