@@ -3,7 +3,7 @@
 ## Python Language Basics
 
 ```python
-a // b # integer division
+a // b # floor division
 a ** b # power
 a % b # residual
 a is b # 'is' check if same object, maybe a == b, but a is not b 
