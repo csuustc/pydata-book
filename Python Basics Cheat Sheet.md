@@ -48,7 +48,16 @@ for i in sequence:
 ### Magic Commands
 
 ```python
-
+%run # run external code
+%pwd # print working directory
+%ls # list working directory contents
+%cd # change directory
+%time # 1 time execution
+%timeit # repeated execution
+%prun # profiling full scripts
+%lprun # line-by-line profiling
+%memit # memory measuring
+%mprun # line-by-line memory profiler
 ```
 
 ## Data Structures and Sequences
