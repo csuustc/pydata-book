@@ -5,7 +5,7 @@
 ### Series
 
 ```python
-mySeries = pd.Series(data, index=[ ]) # can even use non-contiguous or non-sequential indices
+mySeries = pd.Series(data, index=[ ], dtype=, name= ) # can even use non-contiguous or non-sequential indices
 mySeries.values # value's type is ndarray
 mySeries.index # type index
 mySeries.keys() # can use dictionary expression
@@ -52,8 +52,31 @@ df.loc[:, columns] # select one or more columns
 df.loc[ , ] # row & columns
 df.iloc[where] # rows
 df.iloc[:, where] # columns
+df.ix[ , ] # can combine explicit and implicit index
 df.at[label_i, label_j] # select one value using label
 df.iat[i, j] # use integer index
-
 ```
+
+## Operating on Data
+
+| Python Operator | Pandas Method(s)                       |
+| --------------- | -------------------------------------- |
+| ``+``           | ``add()``                              |
+| ``-``           | ``sub()``, ``subtract()``              |
+| ``*``           | ``mul()``, ``multiply()``              |
+| ``/``           | ``truediv()``, ``div()``, ``divide()`` |
+| ``//``          | ``floordiv()``                         |
+| ``%``           | ``mod()``                              |
+| ``**``          | ``pow()``                              |
+
+## Handling Missing Data
+
+```python
+df.isnull() # detect missing values
+df.notnull() # opposite of isnull()
+df.dropna(axis=0, how='any' or 'all', thresh= ) # set thresh as integer
+df.fillna(value= , method= , axis= , limit= ) 
+```
+
+## Hierarchical Indexing
 
