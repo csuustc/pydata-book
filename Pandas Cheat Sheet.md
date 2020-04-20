@@ -80,3 +80,28 @@ df.fillna(value= , method= , axis= , limit= )
 
 ## Hierarchical Indexing
 
+### Multi Index Creation
+
+```python
+df = df.DataFrame(data, index=[[level1], [level2]]) # but cannot set index name
+pd.MultiIndex(levels=None, codes=None, sortorder=None, names=None)
+pd.MultiIndex.from_arrays(arrays, names= ) # Each array-like gives one level's value for each data point.
+pd.MultiIndex.from_tuples(tuples, names= ) # Each tuple is the index of one row/column.
+pd.MultiIndex.from_product(iterables, names = ) # cartesian product
+df.index.names = [] # set index names
+df.columns.names = [] # set columns names
+```
+
+### Rearranging Multi-Indices
+
+```python
+df.sort_index(axis=0, level=None, ascending=True, inplace=False) # sort index
+df.stack(level=-1, dropna=True) # stack from columns to index
+df.unstack(level=-1, fill_value=None) # unstack the inner-most level row
+df.reindex() # change index as 
+df.reset_index(level=None(remove all levels by default), drop=False, name=None(value name)) # remove row labels to new columns
+df.set_index(keys, drop=True, append=False) # set index using existing columns
+```
+
+
+
