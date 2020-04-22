@@ -103,5 +103,63 @@ df.reset_index(level=None(remove all levels by default), drop=False, name=None(v
 df.set_index(keys, drop=True, append=False) # set index using existing columns
 ```
 
+## Combining Datasets
 
+### Concatenate and Append
 
+```python
+pd.concat(objs, axis=0, join='outer', join_axes=None, ignore_index=False,
+          keys=None, levels=None, names=None, verify_integrity=False)
+# verify_intergrity to check duplicate indices
+# keys to specify a label for the data sources
+# join_axes to specify the columns after join
+df1.append(df2) # return a concated dataframe
+```
+
+### Merge and Join
+
+```python
+pd.merge(left, right,
+    how: str = 'inner', 'outer', 'left', 'right'
+    on=None, # label or list, must found in both df
+    left_on=None, right_on=None, # if key's name different
+    left_index: bool = False, right_index: bool = False, # use index as key
+    sort: bool = False, # sort key
+    suffixes=('_x', '_y'))
+df1.join(df2, on=None, how='left', lsuffix='', rsuffix='', sort=False)
+```
+
+## Aggregation
+
+| Aggregation              | Description                     |
+| ------------------------ | ------------------------------- |
+| ``count()``              | Total number of items           |
+| ``first()``, ``last()``  | First and last item             |
+| ``mean()``, ``median()`` | Mean and median                 |
+| ``min()``, ``max()``     | Minimum and maximum             |
+| ``std()``, ``var()``     | Standard deviation and variance |
+| ``mad()``                | Mean absolute deviation         |
+| ``prod()``               | Product of all items            |
+| ``sum()``                | Sum of all items                |
+
+### Group by
+
+```python
+df.groupby(by=None, axis=1, level=None, as_index=True, sort=True)
+# by can be a key, a list, a dic map, any python function
+df.groupby('key')[volumns].sum() 
+df.groupby('key').aggregate([min, median, max]) # compute all the aggregates at once
+df.groupby('key').aggregate({'data1': 'min', 'data2': 'max'})
+df.groupby('key').filter(filter_func) # The filter function should return a Boolean value specifying whether the group passes the filtering
+df.groupby('key').transform(lambda x: x - x.mean()) # return some transformed version of the full data to recombine
+df.groupby('key').apply()
+```
+
+### Pivot Table
+
+```python
+df.pivot_table(values=None, # column to aggregate
+    index=None, columns=None, aggfunc='mean', fill_value=None, # can apply multi funcs
+    margins=False, margins_name='All', # total row / columns
+    dropna=True)
+```
