@@ -166,3 +166,51 @@ df.pivot_table(values=None, # column to aggregate
 
 ## String Operations
 
+### Str. Methods
+
+|              |                  |                  |                  |
+| ------------ | ---------------- | ---------------- | ---------------- |
+| ``len()``    | ``lower()``      | ``translate()``  | ``islower()``    |
+| ``ljust()``  | ``upper()``      | ``startswith()`` | ``isupper()``    |
+| ``rjust()``  | ``find()``       | ``endswith()``   | ``isnumeric()``  |
+| ``center()`` | ``rfind()``      | ``isalnum()``    | ``isdecimal()``  |
+| ``zfill()``  | ``index()``      | ``isalpha()``    | ``split()``      |
+| ``strip()``  | ``rindex()``     | ``isdigit()``    | ``rsplit()``     |
+| ``rstrip()`` | ``capitalize()`` | ``isspace()``    | ``partition()``  |
+| ``lstrip()`` | ``swapcase()``   | ``istitle()``    | ``rpartition()`` |
+
+### Regular Expressions
+
+| Method         | Description                                                  |
+| -------------- | ------------------------------------------------------------ |
+| ``match()``    | Call ``re.match()`` on each element, returning a boolean.    |
+| ``extract()``  | Call ``re.match()`` on each element, returning matched groups as strings. |
+| ``findall()``  | Call ``re.findall()`` on each element                        |
+| ``replace()``  | Replace occurrences of pattern with some other string        |
+| ``contains()`` | Call ``re.search()`` on each element, returning a boolean    |
+| ``count()``    | Count occurrences of pattern                                 |
+| ``split()``    | Equivalent to ``str.split()``, but accepts regexps           |
+| ``rsplit()``   | Equivalent to ``str.rsplit()``, but accepts regexps          |
+| ``get()`` | Index each element |
+| ``slice()`` | Slice each element|
+| ``slice_replace()`` | Replace slice in each element with passed value|
+| ``cat()``      | Concatenate strings|
+| ``repeat()`` | Repeat values |
+| ``normalize()`` | Return Unicode form of string |
+| ``pad()`` | Add whitespace to left, right, or both sides of strings|
+| ``wrap()`` | Split long strings into lines with length less than a given width|
+| ``join()`` | Join strings in each element of the Series with passed separator|
+| ``get_dummies()`` | extract dummy variables as a dataframe |
+
+## Time Series
+
+## Eval and Query
+
+```python
+pd.eval(expr) # uses string expressions to efficiently compute operations
+df.eval(expr) # treat column names as variables within the evaluated expression, but can't filter
+df.query(expr) # Query the columns of a DataFrame with a boolean expression
+```
+
+
+

@@ -105,6 +105,7 @@ xarr @ yarr # dot product
 reminder, whole_part = np.modf(myarr) # seperate interger and decimal
 xarr, yarr = np.meshgrid(points, points) # output x y coordinates
 np.where(cond, xarr, yarr) # if cond = True, x; else y
+np.allclose(xarr, yarr) # Returns True if two arrays are element-wise equal within a tolerance
 ```
 
 ## Aggregation and Broadcasting
