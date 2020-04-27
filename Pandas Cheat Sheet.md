@@ -163,3 +163,6 @@ df.pivot_table(values=None, # column to aggregate
     margins=False, margins_name='All', # total row / columns
     dropna=True)
 ```
+
+## String Operations
+
