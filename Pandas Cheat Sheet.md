@@ -147,7 +147,7 @@ df1.join(df2, on=None, how='left', lsuffix='', rsuffix='', sort=False)
 ```python
 df.groupby(by=None, axis=1, level=None, as_index=True, sort=True)
 # by can be a key, a list, a dic map, any python function
-df.groupby('key')[volumns].sum() 
+df.groupby('key')[columns].sum() 
 df.groupby('key').aggregate([min, median, max]) # compute all the aggregates at once
 df.groupby('key').aggregate({'data1': 'min', 'data2': 'max'})
 df.groupby('key').filter(filter_func) # The filter function should return a Boolean value specifying whether the group passes the filtering
