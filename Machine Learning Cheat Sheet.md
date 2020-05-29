@@ -47,4 +47,7 @@ from sklearn.model_selection import learning_curve
 N, train_lc, val_lc = validation_curve(model, X, y, train_sizes, cv)
 ```
 
-## 
+## Naive Bayes Classification
+
+
+
