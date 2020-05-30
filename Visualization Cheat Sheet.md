@@ -63,3 +63,28 @@ plt.legend()
 ax.set(xlim= , ylim= , xlabel='', ylabel='', title='');
 ```
 
+## Scatter Plots
+
+```python
+plt.plot(x, y, marker=) # Scatter can be individually controlled or mapped to data.
+plt.scatter(x, y, s=None,# size can be array to map data
+    c=None, # color can be sequance of color or sequance of number then cmap
+    marker=None,
+    cmap=None, # *cmap* is only used if *c* is an array of floats.
+    alpha=None, # transparent value
+    linewidths=None, # linewidth of the marker edges
+    edgecolors=None)
+plt.colorbar()  # show color scale
+# plt.plot should be preferred over plt.scatter for large datasets
+```
+
+
+
+
+
+
+
+
+
+
+
