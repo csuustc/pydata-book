@@ -7,7 +7,7 @@ a // b # floor division
 a ** b # power
 a % b # residual
 a is b # 'is' check if same object, maybe a == b, but a is not b 
-isinstance(x, int) # check if object in the class
+isinstance(x, int) # check if object in the class 
 ```
 
 ### Strings
