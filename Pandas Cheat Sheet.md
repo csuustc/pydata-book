@@ -19,16 +19,24 @@ df = pd.DataFrame(data, index=[ ], columns=[ ])
 df.index # same index as Series
 df.columns # columns name, still Index
 df.values
+df.drop(labels=None, axis=0,
+        index=None, columns=None,
+        level=None, inplace=False) # drop rows or columns
 ```
 
 ### Index
 
 ```python
-ind = pd.Index() # like an immutable array
+ind = pd.Index(data=, dtype=, name=) # like an immutable array
+ind.name
 ind.size 
 ind.shape
 ind.ndim
 ind.dtype
+ind.append() # append index element
+ind.drop(labels) # drop index
+ind.delete(loc) # delete ith index
+ind.unique(level= )
 ```
 
 ## Indexing and Selection
@@ -58,6 +66,11 @@ df.iat[i, j] # use integer index
 ```
 
 ## Operating on Data
+
+```python
+pd.DataFrame.add(df1, df2, axis='columns', level=None, fill_value=None)
+df1.add(df2, axis, level, fill_value)
+```
 
 | Python Operator | Pandas Method(s)                       |
 | --------------- | -------------------------------------- |
@@ -98,8 +111,11 @@ df.columns.names = [] # set columns names
 df.sort_index(axis=0, level=None, ascending=True, inplace=False) # sort index
 df.stack(level=-1, dropna=True) # stack from columns to index
 df.unstack(level=-1, fill_value=None) # unstack the inner-most level row
-df.reindex() # change index as 
-df.reset_index(level=None(remove all levels by default), drop=False, name=None(value name)) # remove row labels to new columns
+df.reindex(index=, columns =, # set new index
+           method=, fill_value=, # set fill value
+           level=, limit=)
+df.reset_index(level=None, #remove all levels by default
+               drop=False, name=None) # remove row labels to new columns
 df.set_index(keys, drop=True, append=False) # set index using existing columns
 ```
 

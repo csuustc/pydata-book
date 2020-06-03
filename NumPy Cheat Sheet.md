@@ -12,6 +12,9 @@ np.linespace(start, end, n) # return an array n elements evenly spaced [start, e
 np.empty()
 np.arange(start, stop, step)
 np.eye(n) # creat n rank indentity matrix
+```
+### Pseudorandom
+```python
 np.random.seed() # global seed
 np.random.RandomState(seed).randn() # local seed
 np.random.randn(d0, d1, ...) # standard normal distribution
@@ -154,6 +157,7 @@ myarr.T # transpose 2d array
 np.dot(myarr.T, myarr) # dot product
 myarr.transpose((1, 0, 2)) # 3d array transpose
 myarr.swapaxes(0, 1) # same as above
+myarr[:, np.newaxis] # reshape
 ```
 
 
