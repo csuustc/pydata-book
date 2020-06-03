@@ -10,6 +10,7 @@ mySeries.values # value's type is ndarray
 mySeries.index # type index
 mySeries.keys() # can use dictionary expression
 mySeries.items()
+mySeries.replace()
 ```
 
 ### DataFrame
@@ -37,6 +38,39 @@ ind.append() # append index element
 ind.drop(labels) # drop index
 ind.delete(loc) # delete ith index
 ind.unique(level= )
+```
+
+## I/O
+
+### Read and Loading
+
+```python
+pd.read_csv(filepath, sep=',', header, # int, list, None
+            names, # list of column names
+            index_col=None, # list of columns to use as index
+            use_cols, # just use a subset of columns
+            dtype, true_values, false_values, # set value as True of False
+            skiprows, na_values, chunksize # read in piece
+           )
+# read in piece
+chunker = pd.read_csv(filepath, chunksize=1000)
+for piece in chunker:
+    expr
+```
+
+### Writing
+
+```python
+df.to_csv(filepath, sep=',', header, index, ...)
+```
+
+### Interacting with Databases
+
+```python
+import sqlalchemy as sqla
+db = sqla.create_engine('database path') # connect to database
+pd.read_sql(sql, db) # use sql to query data
+db.dispose() # shut down
 ```
 
 ## Indexing and Selection
@@ -82,14 +116,52 @@ df1.add(df2, axis, level, fill_value)
 | ``%``           | ``mod()``                              |
 | ``**``          | ``pow()``                              |
 
-## Handling Missing Data
+## Manipulation
+
+### Sorting
+
+```python
+df.sort_index(axis=0, level=None, # along axis
+              ascending=True, inplace=False, kind='quicksort',
+              na_position='last', sort_remaining=True, ignore_index: bool = False)
+df.sort_values(by, # can be a list of str
+               axis=0, ascending=True, inplace=False, 
+               na_position='last', ignore_index=False)
+df.rank(axis=0, method: str = 'average', # min, max, first
+        numeric_only: Union[bool, NoneType] = None,
+        na_option: str = 'keep', # or top, bottom
+        ascending: bool = True,
+        pct: bool = False # return percentage
+       )
+```
+
+### Handling Missing Data
 
 ```python
 df.isnull() # detect missing values
 df.notnull() # opposite of isnull()
 df.dropna(axis=0, how='any' or 'all', thresh= ) # set thresh as integer
-df.fillna(value= , method= , axis= , limit= ) 
+df.fillna(value= , # can set dict to specify different values
+          method= , axis= , limit= ) 
+df.drop_duplicates(subset= , # list of columns
+                   keep='first', 'last', None)
 ```
+
+### Discretization and Binning
+
+```python
+cats = pd.cut(data, bins, # can be int or sequence
+              right: bool = True, # whether includes right edge
+              labels=None, # label for bins
+             ) # return a categorical object
+cats.codes
+cats.categories
+cats.value_counts()
+cats = pd.qcut(data, q, # int or list, quantile
+               labels=None, precision: int = 3)
+```
+
+
 
 ## Hierarchical Indexing
 
@@ -105,7 +177,7 @@ df.index.names = [] # set index names
 df.columns.names = [] # set columns names
 ```
 
-### Rearranging Multi-Indices
+### Rearranging index
 
 ```python
 df.sort_index(axis=0, level=None, ascending=True, inplace=False) # sort index
@@ -117,6 +189,7 @@ df.reindex(index=, columns =, # set new index
 df.reset_index(level=None, #remove all levels by default
                drop=False, name=None) # remove row labels to new columns
 df.set_index(keys, drop=True, append=False) # set index using existing columns
+df.rename(index=, columns=) # dict-like or func e.g. index=str.title
 ```
 
 ## Combining Datasets
@@ -153,10 +226,22 @@ df1.join(df2, on=None, how='left', lsuffix='', rsuffix='', sort=False)
 | ``first()``, ``last()``  | First and last item             |
 | ``mean()``, ``median()`` | Mean and median                 |
 | ``min()``, ``max()``     | Minimum and maximum             |
+| ``idxmin()``, ``idxmax()``| return index of Minimum and maximum|
 | ``std()``, ``var()``     | Standard deviation and variance |
 | ``mad()``                | Mean absolute deviation         |
 | ``prod()``               | Product of all items            |
 | ``sum()``                | Sum of all items                |
+
+### Mapping
+
+```python
+func = lambda x: x.max() - x.min()
+df.apply(func, axis=0, ...) # for row or column
+# e.g. count value for each column
+df.apply(pf.value_counts).fillna(0)
+df.applymap(func) # for each element
+mySeries.map(func)
+```
 
 ### Group by
 
