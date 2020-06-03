@@ -81,7 +81,7 @@ mylist.extend() # add each element to the list
 mylist.insert(index= , object= ) # need more computation
 mylist.pop(index=-1) # reverse to insert
 mylist.sort(key= ) # sort inplace
-sorted(mylist, key= ) # sorted can use in any iterable and return a  new list
+sorted(mylist, key= ) # sorted can use in any iterable and return a new list
 mylist[i:j] # slicing
 mylist[::n] # jump n
 zip(mylist1, mylist2) # zip packing
