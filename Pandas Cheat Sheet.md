@@ -99,24 +99,7 @@ df.at[label_i, label_j] # select one value using label
 df.iat[i, j] # use integer index
 ```
 
-## Operating on Data
-
-```python
-pd.DataFrame.add(df1, df2, axis='columns', level=None, fill_value=None)
-df1.add(df2, axis, level, fill_value)
-```
-
-| Python Operator | Pandas Method(s)                       |
-| --------------- | -------------------------------------- |
-| ``+``           | ``add()``                              |
-| ``-``           | ``sub()``, ``subtract()``              |
-| ``*``           | ``mul()``, ``multiply()``              |
-| ``/``           | ``truediv()``, ``div()``, ``divide()`` |
-| ``//``          | ``floordiv()``                         |
-| ``%``           | ``mod()``                              |
-| ``**``          | ``pow()``                              |
-
-## Manipulation
+## Data Clean and Preparation
 
 ### Sorting
 
@@ -134,6 +117,24 @@ df.rank(axis=0, method: str = 'average', # min, max, first
         pct: bool = False # return percentage
        )
 ```
+
+### Operating on Data
+
+```python
+pd.DataFrame.add(df1, df2, axis='columns', level=None, fill_value=None)
+df1.add(df2, axis, level, fill_value)
+```
+
+| Python Operator | Pandas Method(s)                       |
+| --------------- | -------------------------------------- |
+| ``+``           | ``add()``                              |
+| ``-``           | ``sub()``, ``subtract()``              |
+| ``*``           | ``mul()``, ``multiply()``              |
+| ``/``           | ``truediv()``, ``div()``, ``divide()`` |
+| ``//``          | ``floordiv()``                         |
+| ``%``           | ``mod()``                              |
+| ``**``          | ``pow()``                              |
+
 
 ### Handling Missing Data
 
@@ -161,7 +162,31 @@ cats = pd.qcut(data, q, # int or list, quantile
                labels=None, precision: int = 3)
 ```
 
+### Outliers
 
+```python
+df[(np.abs(df) > 3 * np.std(df)).any(1)] # if 1 or more value > 3 sigma
+df[(np.abs(df) > 3 * np.std(df)).any(1)] = np.sign(df) * 3 * np.std(df) 
+```
+
+### Random Sampling
+
+```python
+np.random.permutation(n) # Randomly permute a sequence
+df.sample(n=None, frac=None, # get n samples or a fraction
+          replace=False # get sample repeatly or not
+          weights=None, random_state=None, axis=None)
+```
+
+### Dummy Variables
+
+```python
+dummies = pd.get_dummies(data, prefix=None, prefix_sep='_',
+                         dummy_na=False, # Add a column to indicate NaNs
+                         columns=None, drop_first=False, # make k-1 dummies
+                         dtype=None)
+df_with_dummy = df.drop('key').join(dummies)
+```
 
 ## Hierarchical Indexing
 
@@ -169,6 +194,8 @@ cats = pd.qcut(data, q, # int or list, quantile
 
 ```python
 df = df.DataFrame(data, index=[[level1], [level2]]) # but cannot set index name
+df = df.DataFrame(data, index=pd.Index([index], name=''),
+                  columns=pd.MultiIndex.from_arrays(arrays, names=))
 pd.MultiIndex(levels=None, codes=None, sortorder=None, names=None)
 pd.MultiIndex.from_arrays(arrays, names= ) # Each array-like gives one level's value for each data point.
 pd.MultiIndex.from_tuples(tuples, names= ) # Each tuple is the index of one row/column.
@@ -190,6 +217,7 @@ df.reset_index(level=None, #remove all levels by default
                drop=False, name=None) # remove row labels to new columns
 df.set_index(keys, drop=True, append=False) # set index using existing columns
 df.rename(index=, columns=) # dict-like or func e.g. index=str.title
+df.swaplevel(key1, key2, axis=0) # reorder levels
 ```
 
 ## Combining Datasets
@@ -197,25 +225,26 @@ df.rename(index=, columns=) # dict-like or func e.g. index=str.title
 ### Concatenate and Append
 
 ```python
-pd.concat(objs, axis=0, join='outer', join_axes=None, ignore_index=False,
-          keys=None, levels=None, names=None, verify_integrity=False)
-# verify_intergrity to check duplicate indices
-# keys to specify a label for the data sources
-# join_axes to specify the columns after join
+pd.concat(objs, axis=0, join='outer',
+          ignore_index=False, # reset index
+          keys=None, # specify a label for the data sources
+          levels=None, names=None,
+          verify_integrity=False) # verify_intergrity to check duplicate indices
 df1.append(df2) # return a concated dataframe
 ```
 
 ### Merge and Join
 
 ```python
-pd.merge(left, right,
-    how: str = 'inner', 'outer', 'left', 'right'
-    on=None, # label or list, must found in both df
-    left_on=None, right_on=None, # if key's name different
-    left_index: bool = False, right_index: bool = False, # use index as key
-    sort: bool = False, # sort key
-    suffixes=('_x', '_y'))
+pd.merge(left, right, how: str = 'inner', 'outer', 'left', 'right',
+         on=None, # label or list, must found in both df
+         left_on=None, right_on=None, # if key's name different
+         left_index: bool = False, right_index: bool = False, # use index as key
+         sort: bool = False, # sort key
+         suffixes=('_x', '_y'))
+# join is a shortcut for merge, but can designate key, only on index
 df1.join(df2, on=None, how='left', lsuffix='', rsuffix='', sort=False)
+df.combine_first(other) # use other df to full NA value in df
 ```
 
 ## Aggregation
@@ -263,11 +292,23 @@ df.pivot_table(values=None, # column to aggregate
     index=None, columns=None, aggfunc='mean', fill_value=None, # can apply multi funcs
     margins=False, margins_name='All', # total row / columns
     dropna=True)
+# df.pivot is more simple, but cannot aggregate
+df.pivot(index=None, columns=None, values=None) # from 'long' data to pivot
+# from wide to long, use melt or stack
+df.melt(id_vars=None, # the key column, which won't change
+        value_vars=None, # columns gonna stack
+        var_name=None, # new stacked column
+        value_name='value', col_level=None)
+# difference is that stack return stacked column as index, melt as a new column
 ```
 
 ## String Operations
 
 ### Str. Methods
+
+```python
+mySeries.str.upper()
+```
 
 |              |                  |                  |                  |
 | ------------ | ---------------- | ---------------- | ---------------- |
@@ -290,7 +331,7 @@ df.pivot_table(values=None, # column to aggregate
 | ``replace()``  | Replace occurrences of pattern with some other string        |
 | ``contains()`` | Call ``re.search()`` on each element, returning a boolean    |
 | ``count()``    | Count occurrences of pattern                                 |
-| ``split()``    | Equivalent to ``str.split()``, but accepts regexps           |
+| ``split()``    | Equivalent to ``str.split()``, but accepts regexps, e.g. '\s+' for space |
 | ``rsplit()``   | Equivalent to ``str.rsplit()``, but accepts regexps          |
 | ``get()`` | Index each element |
 | ``slice()`` | Slice each element|
