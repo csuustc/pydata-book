@@ -18,6 +18,10 @@ mystr.replace('old', 'new') # return a new string
 '{0:.2f} {1:s} {2:d}'.format( , , ) # '.2f' float, 's' string, 'd' int
 mystr.encode('utf-8') # encode from bytes to utf-8
 mystr.decode('utf-8') # decode from utf-8 to bytes
+mystr.split('')
+''.join(mystr) # opposite to split
+mystr.strip() # remove leading and trailing whitespace
+
 ```
 
 ### Date and Time
