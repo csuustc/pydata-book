@@ -8,7 +8,7 @@
 np.zeros() # create 0 array
 np.ones()
 np.full(size, value) # filled with value
-np.linespace(start, end, n) # return an array n elements evenly spaced [start, end]
+np.linspace(start, end, n) # return an array n elements evenly spaced [start, end]
 np.empty()
 np.arange(start, stop, step)
 np.eye(n) # creat n rank indentity matrix

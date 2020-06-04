@@ -277,6 +277,9 @@ mySeries.map(func)
 ```python
 df.groupby(by=None, axis=1, level=None, as_index=True, sort=True)
 # by can be a key, a list, a dic map, any python function
+for name, group in df.groupby('key'):
+    print(name, group)
+pieces = dict(list(groupby('key')))
 df.groupby('key')[columns].sum() 
 df.groupby('key').aggregate([min, median, max]) # compute all the aggregates at once
 df.groupby('key').aggregate({'data1': 'min', 'data2': 'max'})
@@ -294,6 +297,10 @@ df.pivot_table(values=None, # column to aggregate
     dropna=True)
 # df.pivot is more simple, but cannot aggregate
 df.pivot(index=None, columns=None, values=None) # from 'long' data to pivot
+# crosstab similar to pivot_table, but use when don't have dataframe
+pd.crosstab(index, columns, values=None, # all array-like
+            rownames=None, colnames=None,
+            aggfunc=None, margins=False)
 # from wide to long, use melt or stack
 df.melt(id_vars=None, # the key column, which won't change
         value_vars=None, # columns gonna stack
