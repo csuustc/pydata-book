@@ -17,14 +17,9 @@ plt.plot(x, np.cos(x))
 
 # Object-oriented interface
 # First create a grid of plots
-# ax will be an array of two Axes objects
 fig, ax = plt.subplots(nrows=1, ncols=1, sharex=False, sharey=False)
 # Call plot() method on the appropriate object
 ax[ ].plot()
-
-# if only 1 figure
-fig = plt.figure(num=None, figsize=None, dpi=None, facecolor=None, edgecolor=None)
-ax = plt.axes()
 
 fig.savefig('my_figure.png') # save picture
 ```
@@ -33,21 +28,21 @@ fig.savefig('my_figure.png') # save picture
 
 ```python
 # Subplots by Hand
+fig = plt.figure(num=None, figsize=None, dpi=None, facecolor=None, edgecolor=None)
 ax = plt.axes([left, bottom, width, height])
-ax1 = fig.add_axes( )
-ax2 = fig.add_axes( )
+ax_i = fig.add_axes( )
+ax_i = fig.add_subplot(nrows, ncols, i)
 # simple grids
 plt.subplot(nrows, ncols, index, **kwargs)
+# multi grids
+fig, ax = plt.subplots(nrows, ncols, sharex=False, sharey=False)
 # adjust the spacing between these plots
 plt.subplots_adjust(left, bottom, right, top, wspace, hspace)
-# object-oriented command
-fig = plt.figure()
-ax_i = fig.add_subplot(nrows, ncols, i)
-# subplots
-fig, ax = plt.subplots(nrows, ncols, sharex=False, sharey=False)
 ```
 
-## Line Plots
+## Plots
+
+### Line Plots
 
 ```python
 plt.plot([x], y, [fmt], *, data= , **kwargs)
@@ -58,30 +53,10 @@ linewidth or lw =
 label = 
 marker = '.' point marker, ',' pixel marker, 'o' circle marker, 's' square marker ...
 # format strings (fmt)
-fmt = '[marker][line][color]' # e.g. 'o--g' '-.r'
+fmt = '[marker][line][color]' or '[color][marker][line]' # e.g. 'o--g' 'r-.'
 ```
 
-### Adjusting plots
-
-```python
-plt.xlim(xleft, xright) # ax.set_xlim
-plt.ylim(yleft, yright)
-plt.axis([xmin, xmax, ymin, ymax])
-plt.axis('tight', 'equal'...)
-```
-
-### Labeling
-
-```python
-plt.title(label, fontdict=None, loc='center', pad=None, **kwargs) # ax.set_title
-plt.xlabel(xlabel, fontdict=None, labelpad=None, **kwargs) # ax.set_xlabel
-plt.ylabel() # ax.set_ylabel
-plt.legend()
-# more convenient way
-ax.set(xlim= , ylim= , xlabel='', ylabel='', title='');
-```
-
-## Scatter Plots
+### Scatter Plots
 
 ```python
 plt.plot(x, y, marker=) # Scatter can be individually controlled or mapped to data.
@@ -98,7 +73,7 @@ plt.cm.<TAB> # browse color map
 # plt.plot should be preferred over plt.scatter for large datasets
 ```
 
-## Error Bars
+### Error Bars
 
 ```python
 plt.errorbar(x, y, yerr=None, xerr=None, fmt='', ecolor=None, 
@@ -106,7 +81,7 @@ plt.errorbar(x, y, yerr=None, xerr=None, fmt='', ecolor=None,
 plt.fill_between(xfit, yfit - dyfit, yfit + dyfit) # continuous value
 ```
 
-## Histograms
+### Histograms
 
 ```python
 plt.hist(x, bins=None, # if a number, then divide bins; if sequence, then edges 
@@ -117,7 +92,7 @@ plt.hist(x, bins=None, # if a number, then divide bins; if sequence, then edges
 plt.hist2d(x, y, bins=10, range=None, density=False, cmap='')
 ```
 
-## 3-D plotting
+### 3-D plotting
 
 ```python
 from mpl_toolkits import mplot3d
@@ -161,10 +136,27 @@ plt.annotate(s, xy, # point to annotate
              arrowprops=dict(arrowstyle, width, shrink, ...))
 ```
 
-### Ticks
+### Labeling
 
-```puthon
- ax[i, j].xaxis.set_major_locator(plt.NullLocator())
+```python
+plt.title(label, fontdict=None, loc='center', pad=None, **kwargs) # ax.set_title
+plt.xlabel(xlabel, fontdict=None, labelpad=None, **kwargs) # ax.set_xlabel
+plt.ylabel() # ax.set_ylabel
+plt.legend()
+# more convenient way
+ax.set(xlim= , ylim= , xlabel='', ylabel='', title='');
+```
+
+### Axis
+
+```python
+plt.xlim(xleft, xright) # ax.set_xlim
+plt.ylim(yleft, yright)
+plt.axis([xmin, xmax, ymin, ymax])
+plt.axis('tight', 'equal'...)
+ax.set_xticks(ticks) # list of ticks location
+ax.set_xticklabels(labels) # set label for ticks
+ax.xaxis.set_major_locator(plt.NullLocator())
 ```
 
 | Locator class        | Description                                             |
@@ -196,6 +188,7 @@ plt.rc('axes', facecolor= , edgecolor= , grid=True, prop_cycle=colors)
 plt.rc('grid', color= , linestyle='solid')
 plt.rc('xtick', direction='out', color= )
 plt.rc('ytick', direction='out', color= )
+plt.rc('figure', figsize=(10, 10))
 plt.rc('patch', edgecolor= )
 plt.rc('lines', linewidth= )
 plt.style.available # to see styles
@@ -207,6 +200,7 @@ plt.style.use()
 ```python
 import seaborn as sns
 sns.set() # set style as seaborn
+sns.regplot(x, y, data)
 sns.kdeplot(data) # smooth estimate of the distribution using a kernel density estimation
 sns.distplot(data) # hist and KDE
 sns.jointplot(x, y, data, kind= ) # 'reg', ...

@@ -40,6 +40,17 @@ ind.delete(loc) # delete ith index
 ind.unique(level= )
 ```
 
+### Categorical Data
+
+```python
+cat_s = df['str_col'].astype('category') # series of string to series of category
+cat_s.cat.categories
+cat_s.cat.codes
+cat_s.cat.set_categories(new_categories, ordered=False)
+```
+
+
+
 ## I/O
 
 ### Read and Loading
@@ -247,7 +258,7 @@ df1.join(df2, on=None, how='left', lsuffix='', rsuffix='', sort=False)
 df.combine_first(other) # use other df to full NA value in df
 ```
 
-## Aggregation
+## Aggregation and Transformation
 
 | Aggregation              | Description                     |
 | ------------------------ | ------------------------------- |
@@ -277,12 +288,17 @@ mySeries.map(func)
 ```python
 df.groupby(by=None, axis=1, level=None, as_index=True, sort=True)
 # by can be a key, a list, a dic map, any python function
+for name, group in df.groupby('key'):
+    print(name, group)
+pieces = dict(list(groupby('key')))
 df.groupby('key')[columns].sum() 
 df.groupby('key').aggregate([min, median, max]) # compute all the aggregates at once
 df.groupby('key').aggregate({'data1': 'min', 'data2': 'max'})
 df.groupby('key').filter(filter_func) # The filter function should return a Boolean value specifying whether the group passes the filtering
-df.groupby('key').transform(lambda x: x - x.mean()) # return some transformed version of the full data to recombine
 df.groupby('key').apply()
+# transform return same shape with original dataframe
+
+df.groupby('key').transform(lambda x: (x - x.mean()) / x.std()) 
 ```
 
 ### Pivot Table
@@ -294,6 +310,10 @@ df.pivot_table(values=None, # column to aggregate
     dropna=True)
 # df.pivot is more simple, but cannot aggregate
 df.pivot(index=None, columns=None, values=None) # from 'long' data to pivot
+# crosstab similar to pivot_table, but use when don't have dataframe
+pd.crosstab(index, columns, values=None, # all array-like
+            rownames=None, colnames=None,
+            aggfunc=None, margins=False)
 # from wide to long, use melt or stack
 df.melt(id_vars=None, # the key column, which won't change
         value_vars=None, # columns gonna stack
