@@ -49,8 +49,6 @@ cat_s.cat.codes
 cat_s.cat.set_categories(new_categories, ordered=False)
 ```
 
-
-
 ## I/O
 
 ### Read and Loading
@@ -297,7 +295,6 @@ df.groupby('key').aggregate({'data1': 'min', 'data2': 'max'})
 df.groupby('key').filter(filter_func) # The filter function should return a Boolean value specifying whether the group passes the filtering
 df.groupby('key').apply()
 # transform return same shape with original dataframe
-
 df.groupby('key').transform(lambda x: (x - x.mean()) / x.std()) 
 ```
 
@@ -305,9 +302,10 @@ df.groupby('key').transform(lambda x: (x - x.mean()) / x.std())
 
 ```python
 df.pivot_table(values=None, # column to aggregate
-    index=None, columns=None, aggfunc='mean', fill_value=None, # can apply multi funcs
-    margins=False, margins_name='All', # total row / columns
-    dropna=True)
+               index=None, columns=None, 
+               aggfunc='mean', fill_value=None, # can apply multi funcs
+               margins=False, margins_name='All', # total row / columns
+               dropna=True)
 # df.pivot is more simple, but cannot aggregate
 df.pivot(index=None, columns=None, values=None) # from 'long' data to pivot
 # crosstab similar to pivot_table, but use when don't have dataframe
