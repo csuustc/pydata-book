@@ -276,7 +276,7 @@ df.combine_first(other) # use other df to full NA value in df
 func = lambda x: x.max() - x.min()
 df.apply(func, axis=0, ...) # for row or column
 # e.g. count value for each column
-df.apply(pf.value_counts).fillna(0)
+df.apply(pd.value_counts).fillna(0)
 df.applymap(func) # for each element
 mySeries.map(func)
 ```
