@@ -2,13 +2,23 @@
 
 ## Python Language Basics
 
-```python
+### Operations
+
+``` python
 a // b # floor division
 a ** b # power
 a % b # residual
 a is b # 'is' check if same object, maybe a == b, but a is not b 
-isinstance(x, int) # check if object in the class 
 ```
+
+### Build-in Functions
+
+```python
+isinstance(x, (int, float)) # check if object in the class 
+iter(iterable) # return iterator
+```
+
+
 
 ### Strings
 
@@ -33,9 +43,22 @@ dt.day
 dt.minute
 dt.date()
 dt.time()
+dt.replace(minute=0, second=0)
 dt.strftime('%m/%d/%Y %H:%M') # datetime to string
 datetime.strptime() # string to datetime
+delta = dt2 - dt1
 ```
+
+| Type | Description                                               |
+| ---- | --------------------------------------------------------- |
+| %Y   | Four-digit year                                           |
+| %y   | Two-digit year                                            |
+| %m   | Two-digit month [01, 12]                                  |
+| %d   | Two-digit day [01, 31]                                    |
+| %H   | Hour (24-hour clock) [00, 23]                             |
+| %I   | Hour (12-hour clock) [01, 12]                             |
+| %M   | Two-digit minute [00, 59]                                 |
+| %S   | Second [00, 61] (seconds 60, 61 account for leap seconds) |
 
 ### Loop
 
@@ -44,7 +67,7 @@ for i in sequence:
     if:
         continue # go out this loop, go on next loop value
     elif:
-        pass # do nothing
+        pass # do nothing, just a placeholder
     else:
         break # stop loop
 ```
@@ -52,6 +75,7 @@ for i in sequence:
 ### Magic Commands
 
 ```python
+%magic # display all magic commands
 %run # run external code
 %pwd # print working directory
 %ls # list working directory contents
@@ -62,6 +86,7 @@ for i in sequence:
 %lprun # line-by-line profiling
 %memit # memory measuring
 %mprun # line-by-line memory profiler
+%reset # delete all variables/names
 ```
 
 ## Data Structures and Sequences
@@ -124,6 +149,7 @@ set_a.issuperset(set_b)
 ### Generator
 
 ```python
+range(start, stop, step) # return an iterator
 def gen(n): # return 1 value until next call
     for i in range(n):
         yield i ** 2
