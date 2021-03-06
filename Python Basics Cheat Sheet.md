@@ -21,6 +21,8 @@ for i in sequence:
         pass # do nothing, just a placeholder
     else:
         break # stop loop
+    # Ternary expressions    
+    value = true-expr if condition else false-expr
 ```
 
 ### Magic Commands
@@ -93,6 +95,7 @@ mydict.update({'key': value})
 mydict.get(key, default_value) # get dict[key] if exist, otherwise default
 mydict.setdefault(key, default_value) # get mydict[key], else set mydict[key] as default
 mydict = dict(zip(seq1, seq2)) # dict can take 2-element tuples
+for key, value in mydict.items(): # unpack
 ```
 
 ### Set

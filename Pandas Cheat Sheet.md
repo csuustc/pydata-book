@@ -96,7 +96,7 @@ mySeries.iloc # use implicit Python-style index
 
 ```python
 df[columns] # select one or more columns, also df.column
-df[conditions] # select rows under condition
+df[conditions] # select rows under condition or whole boolean DataFrame
 df[ : ] # select rows
 df.loc[indexes] # select one or more rows
 df.loc[:, columns] # select one or more columns
