@@ -2,28 +2,6 @@
 
 ## NumPy Basics
 
-### Creating Arrays
-
-```python
-np.zeros() # create 0 array
-np.ones()
-np.full(size, value) # filled with value
-np.linspace(start, end, n) # return an array n elements evenly spaced [start, end]
-np.empty()
-np.arange(start, stop, step)
-np.eye(n) # creat n rank indentity matrix
-```
-### Pseudorandom
-```python
-np.random.seed() # global seed
-np.random.RandomState(seed).randn() # local seed
-np.random.randn(d0, d1, ...) # standard normal distribution
-np.random.random(size) # uniform distribution [0, 1)
-np.random.normal(mean, std, size) # normal distribution
-np.random.randint(low, high, size) # discrete uniform
-np.random.permutation() # random permutation
-```
-
 ### NumPy Array Attributes
 
 ```python
@@ -35,18 +13,40 @@ myarr.itemsize # byte size of each element
 myarr.nbytes # total byte size
 ```
 
+### Creating Arrays
+
+```python
+np.zeros(shape, dtype=float, order='C') # create 0 array
+np.ones() # np.ones_like
+np.full(size, value) # filled with value
+np.linspace(start, end, n) # return an array n elements evenly spaced [start, end]
+np.empty() # np.empty_like
+np.arange(start, stop, step)
+np.eye(n) # creat n rank indentity matrix
+```
 ### Indexing and Slicing
 
 ```python
 myarr[start : stop : step] # if step negative, then swap start and stop
 myarr[i, j] == myarr[i][j]
+myarr[myarr < 0] = 0 # index by boolean array
 myarr[[0, 1, 2, 3]] # fancy indexing 
 ```
 
-### Reshaping
+![Figure 4-2. Two-dimensional array slicing](/Users/changsu/Google Drive/coursework/pydata-book/picture/Figure 4-2. Two-dimensional array slicing.png)
+
+### Pseudorandom
 
 ```python
-marr.reshape((i, j)) # return a new array
+np.random.seed() # global seed
+np.random.RandomState(seed).randn() # local seed
+np.random.randn(d0, d1, ...) # standard normal distribution
+np.random.random(size) # uniform distribution [0, 1)
+np.random.normal(mean, std, size) # normal distribution
+np.random.randint(low, high, size) # discrete uniform
+np.random.permutation() # random permutation
+np.random.shuffle() # Modify a sequence in-place
+np.random.gamma() # binomial, beta, chisquare....
 ```
 
 ### Concatenation and Splitting
@@ -67,7 +67,7 @@ np.hsplit() # horizontal split
 | ``'b'``          | Byte                   | ``np.dtype('b')``                    |
 | ``'i'``          | Signed integer         | ``np.dtype('i4') == np.int32``       |
 | ``'u'``          | Unsigned integer       | ``np.dtype('u1') == np.uint8``       |
-| ``'f'``          | Floating point         | ``np.dtype('f8') == np.int64``       |
+| ``'f'``          | Floating point         | ``np.dtype('f8') == np.float64``     |
 | ``'c'``          | Complex floating point | ``np.dtype('c16') == np.complex128`` |
 | ``'S'``, ``'a'`` | String                 | ``np.dtype('S5')``                   |
 | ``'U'``          | Unicode string         | ``np.dtype('U') == np.str_``         |
@@ -88,8 +88,6 @@ np.hsplit() # horizontal split
 | ``**``   | ``np.power``        | Exponentiation (e. g., ``2 ** 3 = 8``)   |
 | ``%``    | ``np.mod``          | Modulus/remainder (e. g., ``9 % 4 = 1``) |
 
-### Other Operators
-
 ```python
 # ufuncs can set arguments out = arr 
 np.sqrt(myarr) # square root
@@ -105,13 +103,12 @@ np.maximum(xarr, yarr)
 np.multiply.outer(xarr, yarr) # outer product
 np.dot(xarr, yarr) # dot product
 xarr @ yarr # dot product
+xarr * yarr # element-wise product
 reminder, whole_part = np.modf(myarr) # seperate interger and decimal
-xarr, yarr = np.meshgrid(points, points) # output x y coordinates
-np.where(cond, xarr, yarr) # if cond = True, x; else y
 np.allclose(xarr, yarr) # Returns True if two arrays are element-wise equal within a tolerance
 ```
 
-## Aggregation and Broadcasting
+### Aggregation Operations
 
 | Function Name     | NaN-safe Version     | Description                               |
 | ----------------- | -------------------- | ----------------------------------------- |
@@ -129,36 +126,51 @@ np.allclose(xarr, yarr) # Returns True if two arrays are element-wise equal with
 | ``np.any``        | N/A                  | Evaluate whether any elements are true    |
 | ``np.all``        | N/A                  | Evaluate whether all elements are true    |
 
+### Other Logic Operation
+
+```python
+# return same shape as condition array
+np.where(cond, xarr, yarr) # if cond = True, x; else y
+np.unique(myarr, return_index=False, return_counts=False, axis=None)
+np.in1d(xarr, yarr) # whether each element of x is contained in y
+xarr, yarr = np.meshgrid(points, points) # output x y coordinates
+```
+
+## Transformation
+
+### Reshaping and Transposing
+
+```python
+myarr.reshape((i, j)) # return a new array
+myarr.T # transpose 2d array
+np.dot(myarr.T, myarr) # dot product
+myarr.transpose((1, 0, 2)) # 3d array transpose
+myarr.swapaxes(0, 1) # same as above
+# arr.T is accutally arr.swapaxes(0, -1)
+myarr[:, np.newaxis] # reshape
+```
+
+### Sorting
+
+```python
+np.sort(myarr, axis=-1) # return a sorted array
+myarr.sort(axis=-1) # sort in place
+np.argsort(myarr, axis=-1) # return sorted index
+np.partition(myarr, kth, axis) # smallest K values
+np.argpartition() # index
+```
+
+
+
+## Aggregation and Broadcasting
+
 Broadcasting in NumPy follows a strict set of rules to determine the interaction between the two arrays:
 
 - Rule 1: If the two arrays differ in their number of dimensions, the shape of the one with fewer dimensions is *padded* with ones on its leading (left) side.
 - Rule 2: If the shape of the two arrays does not match in any dimension, the array with shape equal to 1 in that dimension is stretched to match the other shape.
 - Rule 3: If in any dimension the sizes disagree and neither is equal to 1, an error is raised.
 
-## Sorting
 
-```python
-np.sort(myarr, axis=-1) # return a sorted array
-myarr.sort() # sort in place
-np.argsort(myarr, axis=-1) # return sorted index
-```
-
-### Partial Sorts
-
-```python
-np.partition(myarr, kth, axis) # smallest K values
-np.argpartition() # index
-```
-
-### Transposing
-
-```python
-myarr.T # transpose 2d array
-np.dot(myarr.T, myarr) # dot product
-myarr.transpose((1, 0, 2)) # 3d array transpose
-myarr.swapaxes(0, 1) # same as above
-myarr[:, np.newaxis] # reshape
-```
 
 
 
