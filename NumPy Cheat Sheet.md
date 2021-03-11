@@ -23,6 +23,8 @@ np.linspace(start, end, n) # return an array n elements evenly spaced [start, en
 np.empty() # np.empty_like
 np.arange(start, stop, step)
 np.eye(n) # creat n rank indentity matrix
+np.repeat(arr, repeats, axis) # repeats can be a single number or a list
+np.tile(arr, reps) # duplicate while array
 ```
 ### Indexing and Slicing
 
@@ -31,6 +33,8 @@ myarr[start : stop : step] # if step negative, then swap start and stop
 myarr[i, j] == myarr[i][j]
 myarr[myarr < 0] = 0 # index by boolean array
 myarr[[0, 1, 2, 3]] # fancy indexing 
+myarr.take(indices, axis) # similiar to fancy indexing
+myarr.put(indices, value) # value can be a list
 ```
 
 ![Figure 4-2. Two-dimensional array slicing](/Users/changsu/Google Drive/coursework/pydata-book/picture/Figure 4-2. Two-dimensional array slicing.png)
@@ -49,17 +53,6 @@ np.random.shuffle() # Modify a sequence in-place
 np.random.gamma() # binomial, beta, chisquare....
 ```
 
-### Concatenation and Splitting
-
-```python
-np.concatenate([arrays], axis=0) 
-np.vstack() # vertical stack (axis = 0)
-np.hstack() # horizontal stack (axis = 1)
-np.split(myarr, indices_or_sections, axis=0) # split into N sections or a list of indices
-np.vsplit() # vertical split
-np.hsplit() # horizontal split
-```
-
 ### Data Type
 
 | Character        | Description            | Example                              |
@@ -69,9 +62,17 @@ np.hsplit() # horizontal split
 | ``'u'``          | Unsigned integer       | ``np.dtype('u1') == np.uint8``       |
 | ``'f'``          | Floating point         | ``np.dtype('f8') == np.float64``     |
 | ``'c'``          | Complex floating point | ``np.dtype('c16') == np.complex128`` |
-| ``'S'``, ``'a'`` | String                 | ``np.dtype('S5')``                   |
+| ``'S'``, ``'a'`` | String                 | ``np.dtype('S5') == np.string_``     |
 | ``'U'``          | Unicode string         | ``np.dtype('U') == np.str_``         |
 | ``'V'``          | Raw data (void)        | ``np.dtype('V') == np.void``         |
+
+```python
+# NumPy dtype Hierarchy
+np.issubdtype(np.float64, np.float)
+np.issubdtype(np.int16, np.integer)
+# nested dtype like pd dataframe
+dtype = [('x', [('a', 'f8'), ('b', 'f4')]), ('y', np.int32)]
+```
 
 ## Universal Functions
 
@@ -141,7 +142,9 @@ xarr, yarr = np.meshgrid(points, points) # output x y coordinates
 ### Reshaping and Transposing
 
 ```python
-myarr.reshape((i, j)) # return a new array
+myarr.reshape((i, j)) # return a new array, fill -1 can auto fill
+myarr.ravel() # retrun a flattern view
+myarr.flatten() # return a flatter copy
 myarr.T # transpose 2d array
 np.dot(myarr.T, myarr) # dot product
 myarr.transpose((1, 0, 2)) # 3d array transpose
@@ -155,20 +158,40 @@ myarr[:, np.newaxis] # reshape
 ```python
 np.sort(myarr, axis=-1) # return a sorted array
 myarr.sort(axis=-1) # sort in place
+myarr[:, ::-1] # reverse sort
+myarr.searchsorted(value) # assume myarr is sorted
 np.argsort(myarr, axis=-1) # return sorted index
 np.partition(myarr, kth, axis) # smallest K values
 np.argpartition() # index
 ```
 
+### Concatenation and Splitting
+
+```python
+np.concatenate([arrays], axis=0) 
+np.vstack() # vertical stack (axis = 0)
+np.hstack() # horizontal stack (axis = 1)
+# stacking helpers
+np.r_[arr1, arr2] # same as vstack
+np.c_[arr1, arr2] # same as hstack
+np.split(myarr, indices_or_sections, axis=0) # split into N sections or a list of indices
+np.vsplit() # vertical split
+np.hsplit() # horizontal split
+```
+
+## Broadcasting
+
+**The Broadcasting Rule**: Two arrays are compatible for broadcasting if for each trailing dimension (i.e., starting from the end) the axis lengths match or if either of the lengths is 1. Broadcasting is then performed over the missing or length 1 dimensions.
+
+```python
+arr2d - arr2d.mean(0) # arr2d.shape = (i, j), arr2d.mean(0).shape = (j,)
+arr2d - arr2d.mean(1).reshape(j, 1) 
+# setting values
+arr2d.shape = (i, j), col[:, np.newaxis].shape = (j, 1)
+arr[:] = col[:, np.newaxis] # fill arr use col
+```
 
 
-## Aggregation and Broadcasting
-
-Broadcasting in NumPy follows a strict set of rules to determine the interaction between the two arrays:
-
-- Rule 1: If the two arrays differ in their number of dimensions, the shape of the one with fewer dimensions is *padded* with ones on its leading (left) side.
-- Rule 2: If the shape of the two arrays does not match in any dimension, the array with shape equal to 1 in that dimension is stretched to match the other shape.
-- Rule 3: If in any dimension the sizes disagree and neither is equal to 1, an error is raised.
 
 
 
