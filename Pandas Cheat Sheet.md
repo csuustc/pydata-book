@@ -5,17 +5,19 @@
 ### Series
 
 ```python
-mySeries = pd.Series(data, index=[ ], dtype=, name= ) # can even use non-contiguous or non-sequential indices
+mySeries = pd.Series(data, index, dtype, name) # can input dict
 mySeries.values # value's type is ndarray
 mySeries.index # type index
+mySeries.name
 mySeries.keys() # can use dictionary expression
-mySeries.items()
-mySeries.replace()
+mySeries.items() # like dict.items()
+mySeries.replace() 
 ```
 
 ### DataFrame
 
 ```python
+# if from dict, outer key as column, inner key as index
 df = pd.DataFrame(data, index=[ ], columns=[ ])
 df.index # same index as Series
 df.columns # columns name, still Index
@@ -23,6 +25,8 @@ df.values
 df.drop(labels=None, axis=0,
         index=None, columns=None,
         level=None, inplace=False) # drop rows or columns
+df.info() # summary
+df.descirbe() # Descriptive statistics
 ```
 
 ### Index
@@ -88,6 +92,7 @@ db.dispose() # shut down
 
 ```python
 mySeries['one': 'three'] # include end
+mySeries[mySeries < 0] # filter
 mySeries.loc() # use explicit index
 mySeries.iloc # use implicit Python-style index
 ```
@@ -106,6 +111,36 @@ df.iloc[:, where] # columns
 df.ix[ , ] # can combine explicit and implicit index
 df.at[label_i, label_j] # select one value using label
 df.iat[i, j] # use integer index
+```
+
+### Rearranging index
+
+```python
+df.sort_index(axis=0, level=None, ascending=True, inplace=False) # sort index
+df.stack(level=-1, dropna=True) # stack from columns to index
+df.unstack(level=-1, fill_value=None) # unstack the inner-most level row
+df.reindex(index=, columns =, # set new index
+           method=, fill_value=, # set fill value
+           level=, limit=)
+df.reset_index(level=None, #remove all levels by default
+               drop=False, name=None) # remove row labels to new columns
+df.set_index(keys, drop=True, append=False) # set index using existing columns
+df.rename(index=, columns=) # dict-like or func e.g. index=str.title
+df.swaplevel(key1, key2, axis=0) # reorder levels
+```
+
+### Multi Index
+
+```python
+df = df.DataFrame(data, index=[[level1], [level2]]) # but cannot set index name
+df = df.DataFrame(data, index=pd.Index([index], name=''),
+                  columns=pd.MultiIndex.from_arrays(arrays, names=))
+pd.MultiIndex(levels=None, codes=None, sortorder=None, names=None)
+pd.MultiIndex.from_arrays(arrays, names= ) # Each array-like gives one level's value for each data point.
+pd.MultiIndex.from_tuples(tuples, names= ) # Each tuple is the index of one row/column.
+pd.MultiIndex.from_product(iterables, names = ) # cartesian product
+df.index.names = [] # set index names
+df.columns.names = [] # set columns names
 ```
 
 ## Data Clean and Preparation
@@ -197,38 +232,6 @@ dummies = pd.get_dummies(data, prefix=None, prefix_sep='_',
 df_with_dummy = df.drop('key').join(dummies)
 ```
 
-## Hierarchical Indexing
-
-### Multi Index Creation
-
-```python
-df = df.DataFrame(data, index=[[level1], [level2]]) # but cannot set index name
-df = df.DataFrame(data, index=pd.Index([index], name=''),
-                  columns=pd.MultiIndex.from_arrays(arrays, names=))
-pd.MultiIndex(levels=None, codes=None, sortorder=None, names=None)
-pd.MultiIndex.from_arrays(arrays, names= ) # Each array-like gives one level's value for each data point.
-pd.MultiIndex.from_tuples(tuples, names= ) # Each tuple is the index of one row/column.
-pd.MultiIndex.from_product(iterables, names = ) # cartesian product
-df.index.names = [] # set index names
-df.columns.names = [] # set columns names
-```
-
-### Rearranging index
-
-```python
-df.sort_index(axis=0, level=None, ascending=True, inplace=False) # sort index
-df.stack(level=-1, dropna=True) # stack from columns to index
-df.unstack(level=-1, fill_value=None) # unstack the inner-most level row
-df.reindex(index=, columns =, # set new index
-           method=, fill_value=, # set fill value
-           level=, limit=)
-df.reset_index(level=None, #remove all levels by default
-               drop=False, name=None) # remove row labels to new columns
-df.set_index(keys, drop=True, append=False) # set index using existing columns
-df.rename(index=, columns=) # dict-like or func e.g. index=str.title
-df.swaplevel(key1, key2, axis=0) # reorder levels
-```
-
 ## Combining Datasets
 
 ### Concatenate and Append
@@ -270,6 +273,8 @@ df.combine_first(other) # use other df to full NA value in df
 | ``prod()``               | Product of all items            |
 | ``sum()``                | Sum of all items                |
 
+![Table 5-8. Descriptive and summary statistics](/Users/changsu/Google Drive/coursework/pydata-book/picture/Table 5-8. Descriptive and summary statistics.png)
+
 ### Mapping
 
 ```python
@@ -278,7 +283,7 @@ df.apply(func, axis=0, ...) # for row or column
 # e.g. count value for each column
 df.apply(pd.value_counts).fillna(0)
 df.applymap(func) # for each element
-mySeries.map(func)
+mySeries.map(func) # element-wise
 ```
 
 ### Group by
