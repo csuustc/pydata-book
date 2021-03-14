@@ -21,7 +21,7 @@ mySeries.replace()
 df = pd.DataFrame(data, index=[ ], columns=[ ])
 df.index # same index as Series
 df.columns # columns name, still Index
-df.values
+df.values # np.array
 df.drop(labels=None, axis=0,
         index=None, columns=None,
         level=None, inplace=False) # drop rows or columns
