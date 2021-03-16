@@ -62,7 +62,7 @@ os.remove('tmp.txt')
 ```python
 # immutable, but element mutable, so not all tuples hashable
 a, b, (c, d) = 1, 2, (3, 4) # unpacking
-a, b, *_ = (1, 2, 3, 4)
+a, b, *_ = (1, 2, 3, 4) # * wildcard
 tup.count(value)
 tup.index(value)
 seq = [(1, 2, 3), (4, 5, 6), (7, 8, 9)]
