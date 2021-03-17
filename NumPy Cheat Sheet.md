@@ -37,7 +37,7 @@ myarr.take(indices, axis) # similiar to fancy indexing
 myarr.put(indices, value) # value can be a list
 ```
 
-![Figure 4-2. Two-dimensional array slicing](/Users/changsu/Google Drive/coursework/pydata-book/picture/Figure 4-2. Two-dimensional array slicing.png)
+![Figure 4-2. Two-dimensional array slicing](picture/Figure 4-2. Two-dimensional array slicing.png)
 
 ### Pseudorandom
 

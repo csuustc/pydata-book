@@ -273,7 +273,7 @@ df.combine_first(other) # use other df to full NA value in df
 | ``prod()``               | Product of all items            |
 | ``sum()``                | Sum of all items                |
 
-![Table 5-8. Descriptive and summary statistics](/Users/changsu/Google Drive/coursework/pydata-book/picture/Table 5-8. Descriptive and summary statistics.png)
+![Table 5-8. Descriptive and summary statistics](picture/Table 5-8. Descriptive and summary statistics.png)
 
 ### Mapping
 
